@@ -60,12 +60,6 @@ CREATE TABLE transactions (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-📌 Endpoints
-
-GET /transactions — lista transações
-
-POST /transactions — cria transação
-
 👨‍💻 Autor
 
 Projeto desenvolvido para estudo de backend com Node.js e MySQL.
