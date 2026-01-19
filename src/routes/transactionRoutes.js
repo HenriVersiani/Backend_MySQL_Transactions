@@ -1,7 +1,8 @@
 import { Router } from "express";
+import { getTransactionsController } from "../controllers/transactionsController.js";
 
 const router = Router()
 
-router.get("/", /* chama minha listagem */)
+router.get("/", getTransactionsController)
 
 export default router

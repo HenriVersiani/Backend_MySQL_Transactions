@@ -9,12 +9,3 @@ export const db = mysql.createPool({
   password: process.env.PASSWORD,
   database: process.env.DB,
 })
-
-
-async function getTransactions(){
-    const [colunas] = await db.query("SELECT * FROM transactions")
-    return colunas
-}
-
-const transactions = await getTransactions()
-console.log(transactions)
