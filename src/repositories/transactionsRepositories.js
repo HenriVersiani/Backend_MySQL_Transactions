@@ -23,7 +23,31 @@ class TransactionsRepository {
       DELETE FROM transactions
       WHERE id = ?
     `, [id])
-    return result
+        return result.affectedRows
+    }
+
+    async update(id, data) {
+
+        const { amount, description, cpf, cnpj } = data
+
+        const [result] = await db.query(
+            `
+      UPDATE transactions
+      SET
+        amount = ?,
+        description = ?,
+        cpf = ?,
+        cnpj = ?
+      WHERE id = ?
+    `, [
+            amount,
+            description,
+            cpf,
+            cnpj,
+            id
+        ]
+        )
+        return result.affectedRows
     }
 }
 

@@ -16,3 +16,8 @@ export async function deleteTransactionService(id){
     const deleteTransaction = await transactionsRepository.delete(id)
     return deleteTransaction
 }
+
+export async function updateTransactionService(id, data) {
+    const updateTransaction = await transactionsRepository.update(id, data)
+    return updateTransaction
+}
