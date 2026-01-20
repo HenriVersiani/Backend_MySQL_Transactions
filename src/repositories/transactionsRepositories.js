@@ -49,6 +49,17 @@ class TransactionsRepository {
         )
         return result.affectedRows
     }
+
+    async findById(id) {
+        const [result] = await db.query(
+            `
+        SELECT *
+        FROM transactions
+        WHERE id = ?
+    `,[id]
+        )
+        return result
+    }
 }
 
 export default new TransactionsRepository();

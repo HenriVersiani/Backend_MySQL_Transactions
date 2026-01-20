@@ -1,4 +1,4 @@
-import { createTransactionService, deleteTransactionService, getTransactionsService, updateTransactionService } from "../services/transactionsService.js"
+import { createTransactionService, deleteTransactionService, findTransactionByIdService, getTransactionsService, updateTransactionService } from "../services/transactionsService.js"
 
 export async function getTransactionsController(req, res){
 
@@ -25,6 +25,14 @@ export async function updateTransactionController(req, res) {
     const data = req.body
 
     const response = await updateTransactionService(id, data)
+
+    return res.json(response)
+}
+
+export async function findTransactionByIdController(req, res) {
+    const { id } = req.params
+
+    const response = await findTransactionByIdService(id)
 
     return res.json(response)
 }
