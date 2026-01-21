@@ -1,6 +1,6 @@
 import { db } from "../config/database.js";
 
-class TransactionsRepository {
+class TransactionsModels {
     async getAll() {
         const [rows] = await db.query("SELECT * FROM transactions");
         return rows;
@@ -23,7 +23,8 @@ class TransactionsRepository {
       DELETE FROM transactions
       WHERE id = ?
     `, [id])
-        return result.affectedRows
+        console.log(result.affectedRows.length)
+        return result.affectedRows > 0 ? result : null
     }
 
     async update(id, data) {
@@ -47,7 +48,7 @@ class TransactionsRepository {
             id
         ]
         )
-        return result.affectedRows
+        return result.affectedRows > 0 ? result : null
     }
 
     async findById(id) {
@@ -58,8 +59,8 @@ class TransactionsRepository {
         WHERE id = ?
     `,[id]
         )
-        return result
+        return result.length > 0 ? result[0] : null
     }
 }
 
-export default new TransactionsRepository();
+export default new TransactionsModels();

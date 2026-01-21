@@ -1,38 +1,67 @@
-import transactionsRepository from "../repositories/transactionsRepositories.js";
+import TransactionsModels from "../models/transactionModels.js";
 
 //possibilita fazer verifiaçoes especificas no servico.
 
-export async function getTransactionsService() {
-    const transactions = await transactionsRepository.getAll();
-    return transactions
-}
-
-export async function createTransactionService(data) {
-    if (data.amount <= 0) {
-        throw new Error("O valor da transação deve ser maior que zero")
+class TransactionServices {
+    async getTransactions() {
+        const transactions = await TransactionsModels.getAll();
+        return transactions
     }
 
-    const createTransaction = await transactionsRepository.create(data)
-    return createTransaction
-}
+    async createTransaction(data) {
+        if (data.amount <= 0) {
+            throw new Error("O valor da transação deve ser maior que zero")
+        }
 
-export async function deleteTransactionService(id){
-    const transaction = await transactionsRepository.findById(id)
-
-    if (!transaction) {
-        throw new Error("Transação não encontrada")
+        const createTransaction = await TransactionsModels.create(data)
+        return createTransaction
     }
 
-    const deleteTransaction = await transactionsRepository.delete(id)
-    return deleteTransaction
+    async deleteTransaction(id) {
+        const transaction = await TransactionsModels.findById(id)
+
+        await this.verifyTransaction(transaction)
+
+        const deleteTransaction = await TransactionsModels.delete(id)
+        return deleteTransaction
+    }
+
+    async updateTransaction(id, data) {
+        const currentTransaction = await TransactionsModels.findById(id)
+
+        if (!currentTransaction) {
+            throw new Error("Transação não encontrada")
+        }
+
+        const updatedData = {
+            amount: data.amount ?? currentTransaction.amount,
+            description: data.description ?? currentTransaction.description,
+            cpf: data.cpf ?? currentTransaction.cpf,
+            cnpj: data.cnpj ?? currentTransaction.cnpj,
+        }
+
+        const updateTransaction = await TransactionsModels.update(id, updatedData)
+
+        await this.verifyTransaction(updateTransaction)
+
+        return updateTransaction
+    }
+
+    async findTransactionById(id) {
+        const transactionFound = await TransactionsModels.findById(id)
+
+        await this.verifyTransaction(transactionFound)
+
+        return transactionFound
+    }
+
+    async verifyTransaction(transaction) {
+        if (!transaction || transaction == null) {
+            throw new Error("Transação não encontrada!")
+        }
+    }
 }
 
-export async function updateTransactionService(id, data) {
-    const updateTransaction = await transactionsRepository.update(id, data)
-    return updateTransaction
-}
+export default new TransactionServices()
 
-export async function findTransactionByIdService(id) {
-    const transactionFound = await transactionsRepository.findById(id)
-    return transactionFound
-}
+

@@ -3,11 +3,11 @@ import { createTransactionController, deleteTransactionController, findTransacti
 
 const router = Router()
 
+router.get("/find/:id", findTransactionByIdController)
 router.get("/", getTransactionsController)
-router.get("/:id", findTransactionByIdController)
 
 router.post("/", createTransactionController)
-router.delete("/:id", deleteTransactionController)
-router.put("/:id", updateTransactionController)
+router.delete("/delete/:id", deleteTransactionController)
+router.put("/update/:id", updateTransactionController)
 
 export default router
